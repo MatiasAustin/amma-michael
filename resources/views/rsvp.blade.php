@@ -9,6 +9,8 @@
 
   <link rel="icon" href="{{ asset('media/anm-logo.png') }}" type="image/png">
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
   <style>
     .nav {
         backdrop-filter: blur(0px);
