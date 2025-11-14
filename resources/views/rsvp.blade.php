@@ -19,10 +19,10 @@
             mix-blend-mode: screen;
         }
 
-    .hamb span::before, .hamb span::after {
+    /* .hamb span::before, .hamb span::after {
         content: ""; position: absolute; left: 0;
         width: 18px; height: 1px; background: #3B1B0E;
-        transition: all 0.3s ease;}
+        transition: all 0.3s ease;} */
   </style>
 </head>
 <body>
