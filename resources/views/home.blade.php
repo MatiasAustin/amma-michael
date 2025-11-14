@@ -118,21 +118,82 @@
       <a class="btn" style="color:#F3ECDC;margin-left:8px" href="{{ url('/rsvp') }}">RSVP</a>
   </section>
 
-  <div class="our-gallery">
-    @if($photos->count())
-    <div class="swiper">
-        <div class="swiper-wrapper">
-        @foreach($photos as $photo)
-            <div class="swiper-slide">
-            <img src="{{ asset('storage/' . $photo->filename) }}" alt="Gallery Image">
-            </div>
-        @endforeach
+
+<section class="wishes-section">
+    
+    <h2 class="wishes-title">Warm Wishes From Our Loved Ones</h2>
+
+    @if($wishes->count())
+        <div class="wish-slider" id="wishSlider">
+            @foreach($wishes as $wish)
+                <div class="wish-card">
+                    <p class="wish-message">“{{ $wish['message'] }}”</p>
+                    <p class="wish-name">— {{ $wish['name'] }}</p>
+                </div>
+            @endforeach
         </div>
-    </div>
     @else
-    <p class="text-center text-muted">Belum ada foto.</p>
+        <div class="wish-empty">
+            <p>No wishes have been submitted yet.</p>
+            <p>Be the first to send your warm message ✨</p>
+
+            <button class="wish-btn" onclick="window.location.href='{{ url('/rsvp') }}'">
+                Send Your Message
+            </button>
+        </div>
     @endif
 
+</section>
+  
+
+
+  <div class="our-gallery">
+        @if($photos->count())
+            @php
+                $randomTop = $photos->shuffle()->take(5);
+                $randomBottom = $photos->shuffle()->take(5);
+            @endphp
+
+            <div class="dual-gallery">
+
+                {{-- ROW 1 --}}
+                <div class="row-slider" id="rowTop">
+                    @foreach($randomTop as $photo)
+                        <div class="photo-card">
+                            <img src="{{ asset('storage/' . $photo->filename) }}" alt="">
+                        </div>
+                    @endforeach
+
+                    {{-- duplicate for seamless looping --}}
+                    @foreach($randomTop as $photo)
+                        <div class="photo-card">
+                            <img src="{{ asset('storage/' . $photo->filename) }}" alt="">
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- ROW 2 --}}
+                <div class="row-slider reverse" id="rowBottom">
+                    @foreach($randomBottom as $photo)
+                        <div class="photo-card">
+                            <img src="{{ asset('storage/' . $photo->filename) }}" alt="">
+                        </div>
+                    @endforeach
+
+                    {{-- duplicate --}}
+                    @foreach($randomBottom as $photo)
+                        <div class="photo-card">
+                            <img src="{{ asset('storage/' . $photo->filename) }}" alt="">
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        @else
+            <p class="text-center text-muted">Belum ada foto.</p>
+        @endif
+      </div>
+  <div class="button-cont">
     <button class="btn" style="margin-top: 20px;" onclick="window.location.href='{{ url('/photoupload') }}'">Upload Your Best Picture</button>
   </div>
 
@@ -146,15 +207,59 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
     <script>
-    const swiper = new Swiper('.swiper', {
-        loop: true,
-        autoplay: {
-        delay: 3000,
-        },
-        slidesPerView: 1,
-        spaceBetween: 20,
-    });
+      document.addEventListener("DOMContentLoaded", () => {
+          const allPhotos = [...document.querySelectorAll(".photo-card")];
+
+          if (allPhotos.length === 0) return;
+
+          // Shuffle (Fisher-Yates)
+          function shuffle(arr) {
+              let i = arr.length;
+              while (i > 0) {
+                  const j = Math.floor(Math.random() * i--);
+                  [arr[i], arr[j]] = [arr[j], arr[i]];
+              }
+              return arr;
+          }
+
+          const shuffled = shuffle([...allPhotos]);
+
+          // Ambil 5 random untuk masing-masing baris
+          const top5 = shuffled.slice(0, 5);
+          const bottom5 = shuffled.slice(5, 10);
+
+          const rowTop = document.getElementById("rowTop");
+          const rowBottom = document.getElementById("rowBottom");
+
+          // Kosongkan row
+          rowTop.innerHTML = "";
+          rowBottom.innerHTML = "";
+
+          // Masukkan 5 photo
+          top5.forEach(p => rowTop.appendChild(p.cloneNode(true)));
+          bottom5.forEach(p => rowBottom.appendChild(p.cloneNode(true)));
+
+          // Duplikasi untuk loop animasi
+          top5.forEach(p => rowTop.appendChild(p.cloneNode(true)));
+          bottom5.forEach(p => rowBottom.appendChild(p.cloneNode(true)));
+
+          // Tambah efek zig-zag
+          rowBottom.classList.add("reverse");
+      });
+      </script>
+
+      <script>
+        const slider = document.getElementById('wishSlider');
+        let autoScroll = setInterval(() => {
+            slider.scrollBy({ left: 300, behavior: 'smooth' });
+            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            }
+        }, 4000);
     </script>
+
+
+
 
 </body>
 </html>

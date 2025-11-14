@@ -253,15 +253,176 @@ p {
 }
 
 
+/* WISHES */
+
+.wishes-section {
+    margin: 80px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wishes-title {
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 35px;
+    color: #fff;
+}
+
+/* Wrapper slider */
+.wish-slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+    scrollbar-width: none;
+}
+.wish-slider::-webkit-scrollbar {
+    display: none;
+}
+
+/* Card */
+.wish-card {
+    min-width: 260px;
+    max-width: 300px;
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 16px;
+    backdrop-filter: blur(4px);
+    color: #fff;
+}
+
+.wish-message {
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.wish-name {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Empty fallback */
+.wish-empty {
+    color: #fff;
+    font-size: 16px;
+    opacity: 0.8;
+    margin-top: 20px;
+}
+
+.wish-btn {
+    margin-top: 20px;
+    padding: 10px 22px;
+    border-radius: 20px;
+    background: #ffffff22;
+    border: 1px solid #ffffff55;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.wish-btn:hover {
+    background: #ffffff44;
+}
+
+
+
+
 /* Gallery */
 
-.our-gallery {
-    padding: 50px 10%;
+/* ====== GALLERY BASE ====== */
+.dual-gallery {
+    overflow: hidden;
     width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 150px;
-    box-sizing: border-box;
+    margin: 40px auto 0;
+}
+
+.row-slider {
+    display: flex;
+    gap: 20px;
+    animation: marquee 22s linear infinite;
+    margin-bottom: 20px;
+}
+
+.row-slider.reverse {
+    animation-direction: reverse;
+}
+
+.photo-card img {
+    width: 320px;          /* desktop 320px */
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+/* animasi infinite tanpa putus (konten 2x = 200%) */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* ====== RESPONSIVE ====== */
+
+/* Tablet landscape & ke bawah */
+@media (max-width: 1024px) {
+    .row-slider {
+        gap: 16px;
+        animation-duration: 26s;    /* sedikit diperlambat */
+    }
+
+    .photo-card img {
+        width: 260px;
+        border-radius: 18px;
+    }
+}
+
+/* Tablet portrait / HP besar */
+@media (max-width: 768px) {
+    .dual-gallery {
+        margin-top: 24px;
+    }
+
+    .row-slider {
+        gap: 12px;
+        animation-duration: 30s;
+    }
+
+    .photo-card img {
+        width: 220px;       /* lebih kecil biar muat */
+        border-radius: 16px;
+    }
+}
+
+/* HP kecil (iPhone SE, dll) */
+@media (max-width: 480px) {
+    .dual-gallery {
+        margin-top: 20px;
+    }
+
+    .row-slider {
+        gap: 10px;
+        animation-duration: 34s;
+    }
+
+    .photo-card img {
+        width: 180px;       /* aman di layar kecil */
+        border-radius: 14px;
+    }
+}
+
+.button-cont {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.button-cont .btn:hover {
+  color: #7E2625;
+  background-color: #F3ECDC;
+  transition: 300ms;
 }
 
 
