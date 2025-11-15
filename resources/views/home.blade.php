@@ -195,7 +195,7 @@
 
             </div>
         @else
-            <p class="text-center text-muted" style="width: 100%; margin: 0 auto; text-align: center;">Belum ada foto.</p>
+            <p class="text-center text-muted" style="width: 100%; margin: 0 auto; text-align: center;">No photos yet.</p>
         @endif
       </div>
   <div class="button-cont">
