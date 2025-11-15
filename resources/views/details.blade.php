@@ -153,7 +153,7 @@
           <h4>(Dress like you’re entering a vogue dinner, and might end up on a dance floor in Beirut)</h4>
       </div>
 
-      <img src="../../media/The+Garcias+Inline.webp" alt="" class="gracias">
+      <img src="../../media/The Gracias.png" alt="" class="gracias">
     </section>
 
   <footer>All Right Reserved by @Freellab2025</footer>
