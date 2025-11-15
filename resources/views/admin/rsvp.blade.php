@@ -1,6 +1,6 @@
 @extends('admin.layout.structure')
 @include('admin.layout.header')
-    <div class="admin-dashboard-content" style="padding: 10px 10%;">
+    <div class="admin-dashboard-content">
         <h1>Admin Dashboard</h1>
         <p>Amma & Michael</p>
 
@@ -27,7 +27,7 @@
 
                 <form action="{{ route('admin.rsvp.update') }}" method="POST">
                     @csrf
-                    <table style="width:75%; border-collapse:collapse; font-size:14px;">
+                    <table style="width:100%; border-collapse:collapse; font-size:14px;">
                         <thead style="background: #471b1a; color: #F3ECDC;">
                             <tr>
                                 <th style="padding:5px; border:0.5px solid #F3ECDC; font-weight: normal;">Type</th>

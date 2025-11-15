@@ -109,10 +109,10 @@
     </script>
 
     <h4>Together with their family</h4>
-    <h1>Amma & Michael</h1>
-    <p>Invite you to join in the joy and begin a new chapter of forever.</p>
+    <h1>Michael Khoury & Amna Yang</h1>
+    <p>Michael and Amna, together with our families invite you to celebrate our forever chapter.</p>
     <br>
-    <h4>More love. More Moments. More Everything.</h4>
+    <h4>Forever Khoury’s</h4>
 
       <a class="btn" href="{{ url('/details') }}" style="margin-bottom: 20px;">See Details</a>
       <a class="btn" style="color:#F3ECDC;margin-left:8px" href="{{ url('/rsvp') }}">RSVP</a>

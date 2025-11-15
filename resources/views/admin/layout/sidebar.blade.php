@@ -1,5 +1,14 @@
-<ul class="admin-nav">
-    <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li><a href="{{ route('admin.details') }}">Details</a></li>
-    <li><a href="{{ route('admin.rsvp') }}">RSVP</a></li>
-</ul>
+<div class="admin-nav-wrapper">
+    <button class="admin-nav-toggle" id="navToggle">Menu</button>
+    <ul class="admin-nav" id="adminNav">
+        <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ route('admin.details') }}">Details</a></li>
+        <li><a href="{{ route('admin.rsvp') }}">RSVP</a></li>
+    </ul>
+</div>
+
+<script>
+    document.getElementById('navToggle').addEventListener('click', function() {
+        document.getElementById('adminNav').classList.toggle('active');
+    });
+</script>

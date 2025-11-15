@@ -1,6 +1,6 @@
 @extends('admin.layout.structure')
 @include('admin.layout.header')
-    <div class="admin-dashboard-content" style="padding: 10px 10%;">
+    <div class="admin-dashboard-content">
         <h1>Admin Dashboard</h1>
         <p>Amma & Michael</p>
 
@@ -28,7 +28,7 @@
 
                             {{-- Preview (opsional) --}}
                             <div class="map-preview" style="margin-top:12px;">
-                            <iframe id="mapPreview" src="{{ $venue->venue_location ?? '' }}" width="75%" height="500"
+                            <iframe id="mapPreview" src="{{ $venue->venue_location ?? '' }}" width="100%" height="500"
                                     style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                             </div>
                         </div>

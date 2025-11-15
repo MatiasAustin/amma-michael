@@ -132,26 +132,70 @@
       <div class="item">
           <h4>CEREMONY — THE PROMISE</h4>
           <h1>{{ optional($countdown->event_at_utc)->format('g A') }}<br><br>
-            The Cathedral of the Annunciation of Our Lady<br>
-            Surry Hills, NSW</h1>
+            Doltone House - Jones Bay Wharf - Level 3, 26-32 Pirrama Road, Pyrmont NSW 2009</h1>
             @if(!empty($venue?->venue_location))
-                <iframe src="{{ $venue->venue_location }}" width="100%" height="450"
-                        style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <iframe src="{{ $venue->venue_location }}" width="100%" style="min-height:500px; border:0; border-radius: 20px; margin: 0 auto" allowfullscreen="" loading="lazy"></iframe>
             @else
                 <p>Venue location not set yet.</p>
   @endif
       </div>
-      <div class="item">
-          <h4>DINNER & PARTY — THE PROOF</h4>
-          <h1>6PM<br>
-            Machine Hall<br>
-            Clarence St, Sydney CBD</h1>
-      </div>
+
       <div class="item">
           <h4>DRESS CODE</h4>
           <h1>Formal Black-Tie Optional</h1>
           <h4>(Dress like you’re entering a vogue dinner, and might end up on a dance floor in Beirut)</h4>
       </div>
+
+
+    <div class="divider" style="height: 0.5px; background-color: #F3ECDC10; margin: 20px 0; width: 100%;"></div>
+
+    <div class="faq" style="width: 100%; margin-left: auto; margin-right: auto; padding: 0 16px;">
+        <h1>FAQ</h1>
+
+        @php
+            $faqs = [
+                ['q' => 'Do I need to RSVP?', 'a' => 'Please RSVP via the RSVP page. Kindly respond by the date on your invitation.'],
+                ['q' => 'Is parking available?', 'a' => 'Limited parking is available nearby. Rideshare or public transport is recommended.'],
+                ['q' => 'Can I bring a guest?', 'a' => 'Only guests listed on your invitation can be accommodated. Please contact us for changes.'],
+                ['q' => 'Is the venue accessible?', 'a' => 'The venue is wheelchair accessible. Contact us for additional assistance.'],
+                ['q' => 'What should I wear?', 'a' => 'Formalwear.'],
+                ['q' => 'Can I bring my children?', 'a' => 'No children under 18.'],
+                ['q' => 'When should I RSVP by?', 'a' => 'Confirm with Auzita.'],
+                ['q' => 'Will transportation be provided?', 'a' => 'No.'],
+                ['q' => 'Where should I park?', 'a' => 'Wilson Parking will provide free parking vouchers for guests.'],
+                ['q' => 'What time should I arrive?', 'a' => '4:30pm to enjoy the views and get ready for the ceremony.'],
+            ];
+        @endphp
+
+        <div class="faq-list" style="margin-top: 20px; width: 100%; margin-left: auto; margin-right: auto;">
+            @foreach($faqs as $i => $item)
+                <div class="faq-item">
+                    <button class="faq-toggle" type="button" aria-expanded="false" aria-controls="faq-{{ $i }}" style="width:100%; text-align:left; padding:12px; font-size:16px; border:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                        {{ $item['q'] }} <span class="chev">▾</span>
+                    </button>
+                    <div id="faq-{{ $i }}" class="faq-content" hidden style="padding:12px; border-left:4px solid #3B1B0E; background:#F3ECDC20; margin-top:4px; text-align:left;">
+                        <p>{{ $item['a'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <script>
+            (function(){
+                document.querySelectorAll('.faq-toggle').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = btn.getAttribute('aria-controls');
+                        const panel = document.getElementById(id);
+                        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+                        btn.setAttribute('aria-expanded', String(!isOpen));
+                        panel.hidden = isOpen;
+                    });
+                });
+            })();
+        </script>
+    </div>
+
+    <div class="divider" style="height: 0.5px; background-color: #F3ECDC10; margin: 20px 0; width: 100%;"></div>
 
       <img src="../../media/The Gracias.png" alt="" class="gracias">
     </section>

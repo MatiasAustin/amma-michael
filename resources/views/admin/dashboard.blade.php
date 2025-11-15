@@ -1,6 +1,6 @@
 @extends('admin.layout.structure')
 @include('admin.layout.header')
-    <div class="admin-dashboard-content" style="padding: 10px 10%;">
+    <div class="admin-dashboard-content">
         <h1>Admin Dashboard</h1>
         <p>Amma & Michael</p>
 
@@ -86,7 +86,7 @@
                                     <a href="{{ asset('/' . $photo->filename) }}" class="download-button" download target="_blank" rel="noopener">Download</a>
                                 @endif
 
-                                <form action="{{ route('gallery.destroy', $photo->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('gallery.destroy', $photo->id) }}" method="POST" style="display:inline; margin:0; padding:0;" class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button class="delete-button" type="submit">Delete</button>

@@ -50,7 +50,7 @@
   <section class="simple">
         <div class="item">
             <h1>Upload Your Best Picture</h1>
-            <h4>Share your favorite moments with us!</h4>
+            <h4>Show us your best photos from the night!</h4>
         </div>
 
         <form action="{{ route('gallery.store') }}" method="POST" enctype="multipart/form-data" class="upload-form">
