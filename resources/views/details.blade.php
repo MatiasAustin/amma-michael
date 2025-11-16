@@ -255,9 +255,7 @@
         {{--  RSVP & GUEST DETAILS --}}
 
         @if($rsvp)
-        <h2 class="title" style="margin-top:40px;">INVITATION DETAILS</h2>
-
-        <table style="width:100%; border-collapse:collapse; margin-top:15px; text-align: left; font-size: 12px">
+        <table style="width:100%; border-collapse:collapse; text-align: left; font-size: 12px">
             <thead style="font-weight: 300;">
                 <tr style="border-bottom:1px solid #F3ECDC;">
                     <th style="text-align:left; padding:8px;">Type</th>
