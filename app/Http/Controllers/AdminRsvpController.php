@@ -72,6 +72,7 @@ class AdminRsvpController extends Controller
         $data = $request->validate([
             'rows'                 => ['required', 'array'],
             'rows.*.row_id'        => ['required', 'string'],
+            'rows.*.email'         => ['nullable', 'email'],
             'rows.*.table_number'  => ['nullable', 'string', 'max:50'],
             'rows.*.seat_number'   => ['nullable', 'string', 'max:50'],
         ]);
@@ -90,6 +91,7 @@ class AdminRsvpController extends Controller
             }
 
             $model->update([
+                'email'        => $row['email'] ?? $model->email,
                 'table_number' => $row['table_number'] ?? null,
                 'seat_number'  => $row['seat_number'] ?? null,
             ]);
