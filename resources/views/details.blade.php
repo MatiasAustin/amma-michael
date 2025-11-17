@@ -160,6 +160,7 @@
                 if (!wrapper || !img) return;
 
                 let scale = 1;
+                let minScale = 1;
                 let originX = 0;
                 let originY = 0;
                 let isPanning = false;
@@ -168,7 +169,61 @@
                 let lastX = 0;
                 let lastY = 0;
 
+                function clampPosition() {
+                    const w = wrapper.clientWidth;
+                    const h = wrapper.clientHeight;
+                    const iwScaled = (img.naturalWidth || img.width) * scale;
+                    const ihScaled = (img.naturalHeight || img.height) * scale;
+
+                    const minX = iwScaled <= w ? (w - iwScaled) / 2 : w - iwScaled;
+                    const maxX = iwScaled <= w ? (w - iwScaled) / 2 : 0;
+                    const minY = ihScaled <= h ? (h - ihScaled) / 2 : h - ihScaled;
+                    const maxY = ihScaled <= h ? (h - ihScaled) / 2 : 0;
+
+                    originX = Math.min(maxX, Math.max(minX, originX));
+                    originY = Math.min(maxY, Math.max(minY, originY));
+                    lastX = originX;
+                    lastY = originY;
+                }
+
+                function centerImage() {
+                    const w = wrapper.clientWidth;
+                    const h = wrapper.clientHeight;
+                    const iwScaled = (img.naturalWidth || img.width) * scale;
+                    const ihScaled = (img.naturalHeight || img.height) * scale;
+
+                    originX = (w - iwScaled) / 2;
+                    originY = (h - ihScaled) / 2;
+                    lastX = originX;
+                    lastY = originY;
+                    applyTransform();
+                }
+
+                function computeMinScale(center = false) {
+                    const w = wrapper.clientWidth;
+                    const h = wrapper.clientHeight;
+                    const iw = img.naturalWidth || img.width;
+                    const ih = img.naturalHeight || img.height;
+                    if (!iw || !ih) return;
+
+                    minScale = Math.min(w / iw, h / ih); // fit entire image inside frame
+                    if (scale < minScale) scale = minScale;
+
+                    if (center) {
+                        const scaledW = iw * scale;
+                        const scaledH = ih * scale;
+                        originX = (w - scaledW) / 2;
+                        originY = (h - scaledH) / 2;
+                        lastX = originX;
+                        lastY = originY;
+                    }
+
+                    clampPosition();
+                    applyTransform();
+                }
+
                 function applyTransform() {
+                    clampPosition();
                     img.style.transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
                 }
 
@@ -197,22 +252,24 @@
                 // Zoom buttons
                 document.getElementById('zoomInBtn').addEventListener('click', () => {
                     scale *= 1.2;
+                    if (scale < minScale) scale = minScale;
                     applyTransform();
                 });
 
                 document.getElementById('zoomOutBtn').addEventListener('click', () => {
                     scale /= 1.2;
-                    if (scale < 0.2) scale = 0.2;
+                    if (scale < minScale) scale = minScale;
                     applyTransform();
                 });
 
                 document.getElementById('resetBtn').addEventListener('click', () => {
-                    scale = 1;
+                    scale = minScale;
                     originX = 0;
                     originY = 0;
                     lastX = 0;
                     lastY = 0;
-                    applyTransform();
+                    computeMinScale(true); // center on reset
+                    centerImage();
                 });
 
                 // 🔹 Desktop: mouse drag
@@ -254,9 +311,9 @@
                 // Scroll wheel zoom (desktop)
                 wrapper.addEventListener('wheel', e => {
                     e.preventDefault();
-                    const delta = e.deltaY < 0 ? 1.1 : 0.9;
+                    const delta = e.deltaY < 0 ? 1.02 : 0.98; // even slower zoom
                     scale *= delta;
-                    if (scale < 0.2) scale = 0.2;
+                    if (scale < minScale) scale = minScale;
                     applyTransform();
                 }, { passive: false });
 
@@ -271,7 +328,18 @@
                 });
 
                 // initial
-                applyTransform();
+                const init = () => {
+                    computeMinScale(true); // center on load
+                    centerImage();
+                };
+
+                if (img.complete) {
+                    init();
+                } else {
+                    img.addEventListener('load', init);
+                }
+
+                window.addEventListener('resize', () => computeMinScale(false));
             })();
         </script>
 
