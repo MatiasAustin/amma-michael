@@ -216,14 +216,23 @@
 
         if (!rows.length) return;
 
+        rows.forEach((row) => {
+            enableDragScroll(row);
+            enableAutoScroll(row);
+        });
+
         function enableDragScroll(container) {
             let isDown = false;
             let startX;
             let scrollLeft;
 
+            // flag buat autoScroll
+            container.dataset.dragging = "false";
+
             // Desktop: mouse drag
             container.addEventListener("mousedown", (e) => {
                 isDown = true;
+                container.dataset.dragging = "true";
                 container.classList.add("dragging");
                 startX = e.pageX - container.offsetLeft;
                 scrollLeft = container.scrollLeft;
@@ -231,11 +240,13 @@
 
             container.addEventListener("mouseleave", () => {
                 isDown = false;
+                container.dataset.dragging = "false";
                 container.classList.remove("dragging");
             });
 
             container.addEventListener("mouseup", () => {
                 isDown = false;
+                container.dataset.dragging = "false";
                 container.classList.remove("dragging");
             });
 
@@ -250,12 +261,14 @@
             // Mobile: touch drag
             container.addEventListener("touchstart", (e) => {
                 isDown = true;
+                container.dataset.dragging = "true";
                 startX = e.touches[0].pageX;
                 scrollLeft = container.scrollLeft;
             }, { passive: true });
 
             container.addEventListener("touchend", () => {
                 isDown = false;
+                container.dataset.dragging = "false";
             });
 
             container.addEventListener("touchmove", (e) => {
@@ -266,9 +279,67 @@
             }, { passive: true });
         }
 
-        rows.forEach(enableDragScroll);
+        function enableAutoScroll(container) {
+            const baseSpeed = 1; // speed bisa lo adjust
+            const isReverse = container.classList.contains("reverse");
+            const direction = isReverse ? -1 : 1;
+            const speed = baseSpeed * direction;
+
+            let isHover = false;
+
+            // Mulai dari tengah kalau reverse biar seam-nya ketutup
+            if (isReverse) {
+                container.scrollLeft = container.scrollWidth / 2;
+            }
+
+            // Hover / focus -> pause
+            container.addEventListener("mouseenter", () => {
+                isHover = true;
+            });
+
+            container.addEventListener("mouseleave", () => {
+                isHover = false;
+            });
+
+            // Sentuh di mobile -> pause juga
+            container.addEventListener("touchstart", () => {
+                isHover = true;
+            }, { passive: true });
+
+            container.addEventListener("touchend", () => {
+                isHover = false;
+            });
+
+            function loop() {
+                const isDragging = container.dataset.dragging === "true";
+
+                if (!isHover && !isDragging) {
+                    const halfWidth = container.scrollWidth / 2;
+
+                    container.scrollLeft += speed;
+
+                    if (!isReverse) {
+                        // jalan ke kanan (atau kiri tergantung RTL)
+                        if (container.scrollLeft >= halfWidth) {
+                            container.scrollLeft -= halfWidth;
+                        }
+                    } else {
+                        // reverse: jalan ke arah sebaliknya
+                        if (container.scrollLeft <= 0) {
+                            container.scrollLeft += halfWidth;
+                        }
+                    }
+                }
+
+                requestAnimationFrame(loop);
+            }
+
+            requestAnimationFrame(loop);
+        }
     });
     </script>
+
+
 
 
       <script>

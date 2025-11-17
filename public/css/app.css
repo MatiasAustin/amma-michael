@@ -389,9 +389,8 @@ p {
 .row-slider {
     display: flex;
     gap: 20px;
-    animation: marquee 22s linear infinite;
+    /* animation: marquee 22s linear infinite; */
     margin-bottom: 20px;
-    -webkit-overflow-scrolling: touch;
     overflow-x: auto;
     cursor: grab;
     scrollbar-width: none;
@@ -420,10 +419,10 @@ p {
 
 
 /* animasi infinite tanpa putus (konten 2x = 200%) */
-@keyframes marquee {
+/* @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
-}
+} */
 
 /* ====== RESPONSIVE ====== */
 
