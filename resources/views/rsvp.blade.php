@@ -6,23 +6,15 @@
   <title>Ava & Mateo — RSVP</title>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-
   <link rel="icon" href="{{ asset('media/anm-logo.png') }}" type="image/png">
-
 
   <style>
     .nav {
         backdrop-filter: blur(0px);
-
     }
     .brand img {
-            mix-blend-mode: screen;
-        }
-
-    /* .hamb span::before, .hamb span::after {
-        content: ""; position: absolute; left: 0;
-        width: 18px; height: 1px; background: #3B1B0E;
-        transition: all 0.3s ease;} */
+        mix-blend-mode: screen;
+    }
   </style>
 </head>
 <body>
@@ -49,11 +41,11 @@
   <section class="simple">
     <div class="item">
         <h1>NOW TELL US WHO’S COMING.</h1>
-        <h4>RSVP BY 18 SEPTEMBER 2025<br>
-            IT’S ADULTS ONLY — SO PLEASE BOOK THE BABY SITTER.</h4>
-
+        <h4>
+            RSVP BY 18 SEPTEMBER 2025<br>
+            IT’S ADULTS ONLY — SO PLEASE BOOK THE BABY SITTER.
+        </h4>
     </div>
-
 
     {{-- RSVP FORM --}}
     <form action="{{ route('rsvp.store') }}" method="POST" id="rsvpForm">
@@ -90,82 +82,85 @@
         <h4 style="margin-top: 40px;">Message for the couple (optional)</h4>
         <textarea name="message" rows="3" placeholder="Write a short note…"></textarea>
 
-        <button type="submit">'I DO'</button>
+        <button type="submit">I DO</button>
     </form>
 
+    {{-- JS untuk dynamic guest rows (pastikan file ini cuma ngurus tambah/hapus guest, bukan submit) --}}
     <script src="{{ asset('js/rsvp-form.js') }}"></script>
 
     {{-- POPUP --}}
-
-    <div id="successPopup" class="popup" style="display:none;
-    position:fixed;inset:0;z-index:9999;justify-content:center;align-items:center;background:rgba(0,0,0,.6); margin: 0 auto;">
+    <div id="successPopup" class="popup" style="
+        display:none;
+        position:fixed;
+        inset:0;
+        z-index:9999;
+        justify-content:center;
+        align-items:center;
+        background:rgba(0,0,0,.6);
+        margin:0 auto;
+    ">
         <div style="background:#ffffffdc;color:#333;padding:20px 26px;max-width:320px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)">
-            <p style="margin:0 0 12px; font-family: 'poppins';">Thank you! Your RSVP has been recorded.</p>
+            <p style="margin:0 0 12px; font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont;">Thank you! Your RSVP has been recorded.</p>
             <button id="closePopupBtn" style="padding:5px 30px;border:0;background:#df1e29;color:#fff;cursor:pointer">Close</button>
         </div>
     </div>
+
     <script>
-        // popup
+        // popup basic
         const popupEl = document.getElementById('successPopup');
         function openPopup(){ popupEl.style.display = 'flex'; }
         function closePopup(){ popupEl.style.display = 'none'; }
         document.getElementById('closePopupBtn')?.addEventListener('click', closePopup);
-
-        // submit
-        const form = document.getElementById('rsvpForm');
-        const btn  = form.querySelector('button[type="submit"]');
-
-        // form.addEventListener('submit', async (e) => {
-        //     e.preventDefault();
-        //     btn.disabled = true; btn.textContent = 'Sending...';
-
-        //     try {
-        //     // Kirim sebagai FormData + no-cors (tidak ada preflight)
-        //     await fetch(form.action, {
-        //         method: 'POST',
-        //         mode: 'no-cors',
-        //         body: new FormData(form)
-        //     });
-
-        //     // anggap sukses (karena no-cors kita tak bisa baca respons)
-        //     form.reset();
-        //     openPopup();
-        //     } catch (err) {
-        //     alert('Network error: ' + err.message);
-        //     } finally {
-        //     btn.disabled = false; btn.textContent = "'I Do'";
-        //     }
-        // });
     </script>
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/3wDnIk5tuwY?si=DiGfxUGE2-Sxleod" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    {{-- kalau session success ada, buka popup setelah redirect --}}
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const popup = document.getElementById('successPopup');
+                if (popup) popup.style.display = 'flex';
+            });
+        </script>
+    @endif
+
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/3wDnIk5tuwY?si=DiGfxUGE2-Sxleod"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
   </section>
 
   <footer>All Right Reserved by @Freellab2025</footer>
 
   <script>
-    ///General
-    const hamb = document.querySelector('.hamb');
+    /// General
+    const hamb  = document.querySelector('.hamb');
     const panel = document.getElementById('mPanel');
+
     function toggle(){
       const open = panel.classList.toggle('open');
       hamb.setAttribute('aria-expanded', open);
-      document.body.style.overflow = open ? 'hidden':'';
+      document.body.style.overflow = open ? 'hidden' : '';
     }
-    hamb.addEventListener('click', toggle);
-    panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', toggle));
-    window.addEventListener('keydown', e=>{ if(e.key==='Escape' && panel.classList.contains('open')) toggle(); });
 
-    // Dapatkan tombol close
+    hamb.addEventListener('click', toggle);
+    panel.querySelectorAll('a').forEach(a => a.addEventListener('click', toggle));
+    window.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && panel.classList.contains('open')) toggle();
+    });
+
+    // tombol close (X) di panel
     const closeBtn2 = document.querySelector('.close-btn');
-    // Close menu kalau tombol X diklik
     closeBtn2.addEventListener('click', () => {
-    panel.classList.remove('open');
+        panel.classList.remove('open');
+        hamb.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
     });
   </script>
 
   <script src="{{ asset('js/custom.js') }}"></script>
-
   <script src="{{ asset('js/hum-menu.js') }}"></script>
 </body>
 </html>
