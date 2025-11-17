@@ -50,7 +50,7 @@ Route::get('/details', function (Request $request) {
 })->name('details');
 
 
-Route::view('/rsvp', 'rsvp');
+Route::view('/rsvp', 'rsvp')->name('rsvp');
 Route::post('/rsvp', [RsvpController::class, 'store'])->name('rsvp.store');
 
 

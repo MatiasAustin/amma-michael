@@ -47,7 +47,7 @@ class RsvpController extends Controller
 
         // bebas: redirect ke halaman thanks / balik ke RSVP
         return redirect()
-            ->route('rsvp.thankyou') // atau ganti ke route yang kamu punya
+            ->route('rsvp') // atau ganti ke route yang kamu punya
             ->with('status', 'RSVP received. Thank you!');
     }
 }
