@@ -115,27 +115,27 @@
         const form = document.getElementById('rsvpForm');
         const btn  = form.querySelector('button[type="submit"]');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            btn.disabled = true; btn.textContent = 'Sending...';
+        // form.addEventListener('submit', async (e) => {
+        //     e.preventDefault();
+        //     btn.disabled = true; btn.textContent = 'Sending...';
 
-            try {
-            // Kirim sebagai FormData + no-cors (tidak ada preflight)
-            await fetch(form.action, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: new FormData(form)
-            });
+        //     try {
+        //     // Kirim sebagai FormData + no-cors (tidak ada preflight)
+        //     await fetch(form.action, {
+        //         method: 'POST',
+        //         mode: 'no-cors',
+        //         body: new FormData(form)
+        //     });
 
-            // anggap sukses (karena no-cors kita tak bisa baca respons)
-            form.reset();
-            openPopup();
-            } catch (err) {
-            alert('Network error: ' + err.message);
-            } finally {
-            btn.disabled = false; btn.textContent = "'I Do'";
-            }
-        });
+        //     // anggap sukses (karena no-cors kita tak bisa baca respons)
+        //     form.reset();
+        //     openPopup();
+        //     } catch (err) {
+        //     alert('Network error: ' + err.message);
+        //     } finally {
+        //     btn.disabled = false; btn.textContent = "'I Do'";
+        //     }
+        // });
     </script>
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/3wDnIk5tuwY?si=DiGfxUGE2-Sxleod" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
