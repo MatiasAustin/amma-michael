@@ -137,7 +137,7 @@
                 <img id="floorMapImage"
                     src="{{ $floorMapUrl }}"
                     alt="Floor Map"
-                    style="user-select:none; -webkit-user-drag:none; max-width:none; position:absolute; top:0; left:0;">
+                    style="user-select:none; -webkit-user-drag:none; max-width:none; position:absolute; top:0; left:0; transform-origin: top left;">
             </div>
 
             <div style="margin-bottom:10px; width:100%; max-width:800px; display:flex; justify-content:end; gap:10px; margin-top:10px; margin-bottom:10px; margin-right:10%;">

@@ -275,34 +275,43 @@ p {
 
 
 /* Container yang di-scroll (disembunyiin scrollbarnya) */
+/* WRAPPER SCROLLER */
 .wishes-scroller {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 10px;         /* biar 1 baris terus */
   width: 100%;
-    justify-content: center;
   margin: 0 auto;
-  overflow-x: auto;
-  overflow-y: visible;
   padding: 8px 0 16px;
-  scrollbar-width: none;      /* Firefox */
-  -ms-overflow-style: none;   /* IE/Edge Lama */
+
+  overflow: hidden;          /* transform, bukan native scroll */
+  cursor: grab;
+
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge lama */
+}
+
+.wishes-scroller:active {
+  cursor: grabbing;
 }
 
 .wishes-scroller::-webkit-scrollbar {
-  display: none;              /* Chrome/Safari */
+  display: none;             /* Chrome/Safari */
 }
 
-.wishes-row {
-  display: flex;        /* <<< PENTING: jangan sampai jadi 2 baris */
+/* TRACK = A + A (clone) yang digeser dengan transform */
+.wishes-track {
+  display: flex;
+  flex-wrap: nowrap;
   gap: 10px;
   align-items: stretch;
+  will-change: transform;
 }
 
-/* kartu */
+/* KARTU WISH */
 .wish-card {
-  min-width: 260px;
-  max-width: 320px;
+  flex: 0 0 auto;
+  width: 260px;
+  max-width: 260px;
+  box-sizing: border-box;
+
   padding: 16px 18px;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.22);
@@ -310,11 +319,13 @@ p {
   text-align: left;
 }
 
-
 .wish-text {
   font-size: 12px;
   line-height: 1.7;
   margin: 0 0 10px;
+
+  white-space: normal;       /* teks boleh turun baris */
+  word-break: break-word;
 }
 
 .wish-name {
@@ -340,35 +351,35 @@ p {
 .wishes-cta .btn {
   padding: 10px 30px;
   border-bottom: 1px solid #F3ECDC;
-  font-weight: 300; cursor: pointer;
+  font-weight: 300;
+  cursor: pointer;
   color: #F3ECDC;
   background-color: transparent;
   text-transform: none;
 }
+
 .wishes-cta .btn:hover {
   background: #F3ECDC;
   color: #7E2625;
   transition: background 0.3s ease;
 }
 
-/* Mobile: 1 card full width */
+/* Mobile: 1 card hampir full width, tapi tetep inline di track */
 @media (max-width: 640px) {
   .wishes-section {
     margin: 60px 0 40px;
   }
 
   .wish-card {
-    min-width: 80%;
-    max-width: 80%;
+    width: 85%;
+    max-width: 85%;
     margin: 0 auto;
   }
 
-  .wishes-row {
+  .wishes-track {
     gap: 10px;
   }
 }
-
-
 
 
 

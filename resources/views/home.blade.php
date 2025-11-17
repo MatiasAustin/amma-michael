@@ -119,35 +119,48 @@
   </section>
 
 
-<section class="wishes-section">
-    <h1 class="wishes-heading">Wishes From Our Loved Ones</h1>
-    <p class="wishes-subtitle">
-        Small notes, big love. Here are some of the words shared for our day.
-    </p>
-
-    @if ($wishes->count())
-        <div class="wishes-scroller">
-            <div class="wishes-row">
-                @foreach ($wishes as $wish)
-                    <article class="wish-card">
-                        <p class="wish-text">“{{ $wish->message }}”</p>
-                        <p class="wish-name">— {{ $wish->full_name }}</p>
-                    </article>
-                @endforeach
-            </div>
-        </div>
-    @else
-        <p class="wishes-empty">
-            No wishes have been written yet. Be the first one to leave a note for us.
+    {{-- WISHES SECTION --}}
+    <section class="wishes-section">
+        <h1 class="wishes-heading">Wishes From Our Loved Ones</h1>
+        <p class="wishes-subtitle">
+            Small notes, big love. Here are some of the words shared for our day.
         </p>
-    @endif
 
-    <div class="wishes-cta">
-        <a href="{{ url('/rsvp') }}" class="btn">Send Your Wishes</a>
-    </div>
-</section>
+        @if ($wishes->count())
+            <div class="wishes-scroller">
+                <div class="wishes-track">
+                    {{-- TRACK A --}}
+                    @foreach ($wishes as $wish)
+                        <article class="wish-card">
+                            <p class="wish-text">“{{ $wish->message }}”</p>
+                            <p class="wish-name">— {{ $wish->full_name }}</p>
+                        </article>
+                    @endforeach
+
+                    {{-- TRACK A (CLONE) --}}
+                    @foreach ($wishes as $wish)
+                        <article class="wish-card">
+                            <p class="wish-text">“{{ $wish->message }}”</p>
+                            <p class="wish-name">— {{ $wish->full_name }}</p>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <p class="wishes-empty">
+                No wishes have been written yet. Be the first one to leave a note for us.
+            </p>
+        @endif
+
+        <div class="wishes-cta">
+            <a href="{{ url('/rsvp') }}" class="btn">Send Your Wishes</a>
+        </div>
+    </section>
 
 
+
+
+  {{-- OUR GALLERY SECTION --}}
     <div class="our-gallery">
         @if($photos->count())
             @php
@@ -340,72 +353,107 @@
     </script>
 
 
+{{-- WISHES JS --}}
+<script>
+(() => {
+  const scroller = document.querySelector('.wishes-scroller');
+  if (!scroller) return;
 
+  const track = scroller.querySelector('.wishes-track');
+  if (!track) return;
 
-      <script>
-            (function () {
-                const scroller = document.querySelector('.wishes-scroller');
-                if (!scroller) return;
+  const cards = track.children;
+  if (cards.length < 4) return; // minimal 2 card × 2 track
 
-                // Biat lebih smooth & nggak cepat banget
-                const speed = 0.2; // px per frame
-                let pos = 0;
+  let baseWidth = 0;      // lebar 1 track (A saja)
+  let offset = 0;         // posisi virtual dalam px
+  const speed = 0.5;      // px per frame (atur sesuai selera)
 
-                // Duplikasi konten biar loopnya lebih halus
-                const row = scroller.querySelector('.wishes-row');
-                if (!row) return;
+  let paused = false;
+  let isDragging = false;
+  let startX = 0;
+  let startOffset = 0;
 
-                // Kalau card-nya kurang dari 3, nggak usah auto slide
-                const cards = row.children;
-                if (cards.length < 4) return;
+  function measure() {
+    // track = A + A → baseWidth = setengah total
+    baseWidth = track.scrollWidth / 2;
+  }
 
-                const clone = row.cloneNode(true);
-                scroller.appendChild(clone);
+  measure();
+  window.addEventListener('resize', measure);
 
-                function step() {
-                pos += speed;
-                // total scrollable width (2 row digabung)
-                const maxScroll = row.scrollWidth;
+  // Helper: normalisasi offset ke [0, baseWidth)
+  function normalizeOffset() {
+    if (!baseWidth) return;
+    offset = ((offset % baseWidth) + baseWidth) % baseWidth;
+  }
 
-                if (pos >= maxScroll) {
-                    pos = 0; // reset ke awal
-                }
+  // Hover / keluar (desktop)
+  scroller.addEventListener('mouseenter', () => {
+    paused = true;
+  });
 
-                scroller.scrollLeft = pos;
-                requestAnimationFrame(step);
-                }
+  scroller.addEventListener('mouseleave', () => {
+    paused = false;
+    isDragging = false;
+  });
 
-                // Start animasi
-                requestAnimationFrame(step);
+  // Mouse drag
+  scroller.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    paused = true;
+    startX = e.pageX;
+    startOffset = offset;
+  });
 
-                // Pause animasi ketika user drag scroll (biar nggak annoying)
-                let isUserScrolling = false;
-                let scrollTimeout;
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    paused = false;
+  });
 
-                scroller.addEventListener('wheel', () => {
-                isUserScrolling = true;
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    isUserScrolling = false;
-                }, 1500);
-                }, { passive: true });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const delta = e.pageX - startX;
+    offset = startOffset - delta;
+    normalizeOffset();
+  });
 
-                const oldStep = step;
-                function animatedStep() {
-                if (!isUserScrolling) {
-                    pos += speed;
-                    const maxScroll = row.scrollWidth;
-                    if (pos >= maxScroll) pos = 0;
-                    scroller.scrollLeft = pos;
-                }
-                requestAnimationFrame(animatedStep);
-                }
-                // override ke yang bisa pause
-                requestAnimationFrame(animatedStep);
-            })();
-        </script>
+  // Touch (mobile)
+  scroller.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    paused = true;
+    startX = e.touches[0].pageX;
+    startOffset = offset;
+  }, { passive: true });
 
+  scroller.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const delta = e.touches[0].pageX - startX;
+    offset = startOffset - delta;
+    normalizeOffset();
+  }, { passive: true });
 
+  scroller.addEventListener('touchend', () => {
+    isDragging = false;
+    paused = false;
+  });
+
+  // Loop animasi
+  function loop() {
+    if (!paused && !isDragging && baseWidth) {
+      offset += speed;       // jalan otomatis
+      normalizeOffset();
+    }
+
+    track.style.transform = `translateX(${-offset}px)`;
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();
+</script>
 
 
 
