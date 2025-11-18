@@ -140,6 +140,15 @@
 
                         </table>
                     </div>
+
+                    <div style="margin-top:20px; color:#f8f3eb;">
+                        <h4 style="margin:0 0 10px 0; letter-spacing:0.5px;">NOTES</h4>
+                        <p style="margin:0 0 6px 0; font-size: 12px;">
+                            Generate Code is only for RSVP (main guests). Additional guests will use the same unique code as their RSVP.
+                        <br>
+                            Invitation details will show both the RSVP and any additional guests together when extra guests are added in the RSVP form.</p>
+                    </div>
+
                     <button type="submit"
                             style="margin-top:15px; padding:8px 16px; background:#F3ECDC; color:#7E2625; border:none; border-radius:4px;">
                         Save Assignments
