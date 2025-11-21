@@ -1,0 +1,43 @@
+name: Deploy Laravel to Hostinger via SFTP
+
+on:
+  push:
+    branches:
+      - main   # ganti kalau branch utama lu bukan 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # (opsional) Install dependencies dulu di GitHub, kalau mau kirim hasil build
+      # Biasanya dipakai kalau lu punya Vite / front-end build
+      # Kalau nggak butuh, step ini bisa dihapus
+      - name: Install PHP dependencies (local)
+        run: |
+          composer install --no-interaction --prefer-dist --no-dev
+        env:
+          COMPOSER_ALLOW_SUPERUSER: 1
+
+      # Sync ke Hostinger via SFTP
+      - name: Deploy via SFTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: sftp
+          port: 22  # kalau Hostinger lu pakai port lain, ganti di sini
+          local-dir: ./   # folder yang di-upload (root repo)
+          server-dir: /home/u488664459/domains/foreverkhoury.com/michael-amna/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            **/storage/logs/**
+            **/storage/framework/cache/**
