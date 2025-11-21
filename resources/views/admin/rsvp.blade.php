@@ -115,24 +115,39 @@
 
                                     <td style="padding:6px; border:1px solid #F3ECDC;">
                                         @if($person['source_type'] === 'RSVP')
-                                            {{-- Generate Code (tetap submit langsung) --}}
-                                            <button type="submit"
-                                                formaction="{{ route('admin.rsvp.generateCode', ['rsvp' => $person['rsvp_id']]) }}"
-                                                formmethod="POST"
-                                                style="padding:4px 8px; font-size:11px; background:#F3ECDC; color:#7E2625; border:none; border-radius:3px; margin-bottom:4px;">
-                                                Generate Code
-                                            </button>
+                                            <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;     justify-content: center;">
+                                                {{-- Generate Code (tetap submit langsung) --}}
+                                                <button type="submit"
+                                                    formaction="{{ route('admin.rsvp.generateCode', ['rsvp' => $person['rsvp_id']]) }}"
+                                                    formmethod="POST"
+                                                    style="padding:4px 8px; font-size:11px; background:#F3ECDC; color:#7E2625; border:none; border-radius:3px;">
+                                                    Generate Code
+                                                </button>
 
-                                            {{-- Send Email via popup --}}
-                                            <button type="button"
-                                                onclick="openSendCodeModal(this)"
-                                                data-rsvp-id="{{ $person['rsvp_id'] }}"
-                                                data-email="{{ $person['email'] }}"
-                                                data-name="{{ $person['contact_name'] }}"
-                                                data-code="{{ $person['unique_code'] }}"
-                                                style="padding:4px 8px; font-size:11px; background:#7E2625; color:#F3ECDC; border:none; border-radius:3px;">
-                                                Send Email
-                                            </button>
+                                                {{-- Send Email via popup --}}
+                                                <button type="button"
+                                                    onclick="openSendCodeModal(this)"
+                                                    data-rsvp-id="{{ $person['rsvp_id'] }}"
+                                                    data-email="{{ $person['email'] }}"
+                                                    data-name="{{ $person['contact_name'] }}"
+                                                    data-code="{{ $person['unique_code'] }}"
+                                                    style="padding:4px 8px; font-size:11px; background:#7E2625; color:#F3ECDC; border:none; border-radius:3px;">
+                                                    Send Email
+                                                </button>
+
+                                                {{-- Delete RSVP + guests --}}
+                                                <button type="button"
+                                                    onclick="confirmDeleteRsvp('{{ $person['rsvp_id'] }}')"
+                                                    aria-label="Delete RSVP and guests"
+                                                    style="padding:4px; background:#F3ECDC; color:#7E2625; border:1px solid #7E2625; border-radius:3px; display:flex; align-items:center; justify-content:center;">
+                                                    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         @endif
                                     </td>
 
@@ -156,6 +171,18 @@
                         Save Assignments
                     </button>
                 </form>
+
+                @foreach($people as $person)
+                    @if($person['source_type'] === 'RSVP')
+                        <form id="delete-form-{{ $person['rsvp_id'] }}"
+                            action="{{ route('admin.rsvp.destroy', ['rsvp' => $person['rsvp_id']]) }}"
+                            method="POST"
+                            style="display:none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
+                @endforeach
 
             </div>
         </div>
@@ -308,6 +335,20 @@
                 onFail();
             }
         }
+
+        function confirmDeleteRsvp(rsvpId) {
+            const confirmed = confirm('Are you sure you want to delete this RSVP (main guest) along with the other guests?');
+            if (!confirmed) {
+                return false;
+            }
+
+            const form = document.getElementById('delete-form-' + rsvpId);
+            if (form) {
+                form.submit();
+            }
+
+            return false;
+        }
         </script>
 
         {{-- trigger success popup kalau ada session("success") --}}
@@ -321,5 +362,3 @@
 
     </body>
 </html>
-
-

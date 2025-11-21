@@ -222,4 +222,13 @@ class AdminRsvpController extends Controller
         return back()->with('success', 'Unique code has been sent to '.$targetEmail.'.');
     }
 
+    public function destroy(Rsvp $rsvp)
+    {
+        // delete extra guests first, then main RSVP
+        $rsvp->guests()->delete();
+        $rsvp->delete();
+
+        return back()->with('success', 'RSVP and its guests have been deleted.');
+    }
+
 }

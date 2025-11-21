@@ -45,10 +45,6 @@
   </header>
 
   <section class="simple" style="text-align: center; margin-top: 60px; background-image: url({{ asset('media/anm-pattern-bg.png') }}); background-size: contain; background-repeat: no-repeat; background-position: center; background-size: 50% auto;">
-      <h4>Not Just a Celebration</h4>
-      <h1>A Story of 2 Hearts</h1>
-      <p>Bound by Love, Laughter, and the memories we create together.</p>
-      <h4>MORE LOVE.<br>MORE EVERYTHING.</h4>
 
     <div class="countdown" style="display: flex; justify-content: center;margin: 40px 0 80px 0;">
         <div class="count-box">
@@ -107,6 +103,11 @@
         })();
 
     </script>
+
+      <h4>Not Just a Celebration</h4>
+      <h1>A Story of 2 Hearts</h1>
+      <p>Bound by Love, Laughter, and the memories we create together.</p>
+      <h4>MORE LOVE.<br>MORE EVERYTHING.</h4>
 
     <h4>Together with their family</h4>
     <h1>Michael Khoury & Amna Yang</h1>

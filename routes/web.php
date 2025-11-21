@@ -112,6 +112,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/seating', [AdminRsvpController::class, 'update'])->name('admin.rsvp.update');
 
     Route::get('/admin/seating/export', [AdminRsvpController::class, 'exportCsv'])->name('admin.rsvp.export');
+
+    Route::delete('/admin/rsvp/{rsvp}', [AdminRsvpController::class, 'destroy'])
+        ->name('admin.rsvp.destroy');
 });
 
 // Generate and Send Unique Codes for RSVPs
@@ -120,4 +123,3 @@ Route::post('/admin/rsvp/{rsvp}/generate-code', [AdminRsvpController::class, 'ge
 
 Route::post('/admin/rsvp/{rsvp}/send-code', [AdminRsvpController::class, 'sendCode'])
     ->name('admin.rsvp.sendCode');
-
