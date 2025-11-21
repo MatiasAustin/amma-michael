@@ -41,3 +41,4 @@ jobs:
             **/vendor/**
             **/storage/logs/**
             **/storage/framework/cache/**
+            **/bootstrap/cache/*.php
