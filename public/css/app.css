@@ -77,6 +77,10 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: #F3ECDC;
 }
+.links a:hover {
+    opacity: 50%;
+    transition: 300ms;
+}
 .hamb {
   display: none; width: 40px; height: 40px;
   align-items: center; justify-content: center;
@@ -123,6 +127,10 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 1.6px;
   text-transform: uppercase;
   font-weight: 500;
+}
+.panel a:hover {
+    border: 1px solid var(--bg);
+    transition: border 0.3s ease;
 }
 
 .panel.open {
@@ -216,7 +224,7 @@ p {
   margin: 0 20px;
 }
 .btn:hover {
-  background: var(--accent);
+  background: #F3ECDC;
   border: none;
   color: #7E2625;
   transition: background 0.3s ease;

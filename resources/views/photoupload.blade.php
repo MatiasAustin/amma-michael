@@ -34,7 +34,7 @@
       </div>
       <div class="links">
         <a href="{{ url('/') }}" style="color: #3B1B0E;">Home</a>
-        <a href="{{ url('/details') }}" style="color: #3B1B0E;">Details</a>
+        <a href="{{ url('/details') }}" style="color: #3B1B0E;">Finer Details</a>
         <a href="{{ url('/rsvp') }}" style="color: #3B1B0E;">RSVP</a>
       </div>
       <button class="hamb" aria-label="Open menu" aria-controls="mPanel" aria-expanded="false"><span style="background: #3B1B0E;"></span></button>
@@ -42,7 +42,7 @@
     <div id="mPanel" class="panel">
       <button class="close-btn" aria-label="Close menu" aria-controls="mPanel">&times;</button>
       <a href="{{ url('/') }}">Home</a>
-      <a href="{{ url('/details') }}">Details</a>
+      <a href="{{ url('/details') }}">Finer Details</a>
       <a href="{{ url('/rsvp') }}">RSVP</a>
     </div>
   </nav>
